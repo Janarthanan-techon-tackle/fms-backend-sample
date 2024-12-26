@@ -1,0 +1,413 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+   provider = "sqlite"
+   url      = env("DATABASE_URL")
+}
+// model User {
+//    id        Int          @default(autoincrement()) @id
+//    firstName String
+//    lastName  String
+//    createdAt DateTime     @default(now())
+//    updatedAt DateTime     @updatedAt
+//    deletedAt DateTime?
+//    password  UserPassword[]
+//    userDetails UserDetails[]
+//        mobileVerificationRequest MobileVerificationOtpRequest[]
+//     loginRequest LoginOtpRequest[]
+//     forgotPassWordOtpRequest ForgotPassWordOtpRequest[]
+//    createdByUserId  Int? 
+//    createdByUser User? @relation("UserCreated", fields: [createdByUserId], references: [id]) // Relation
+//    createdUsers   User[] @relation("UserCreated") 
+// }
+
+// model UserDetails{
+//     id    Int     @default(autoincrement()) @id
+//     mobileNumber String @unique
+//     countryCode String
+//     isMobileNumberVerified Boolean @default(false)
+//     email String @unique
+//     isActive    Boolean @default(true)
+//     createdAt               DateTime               @default(now())
+//     updatedAt               DateTime          @updatedAt
+//     deletedAt               DateTime?
+//     userId Int
+//     user User @relation(fields:[userId],references: [id])
+//     userRoleId Int
+//     userRole UserRole @relation(fields: [userRoleId],references: [id])
+// }
+
+// model UserPassword{
+//     id    Int     @default(autoincrement()) @id
+//     password String
+//     isActive Boolean @default(true)
+//         createdAt               DateTime               @default(now())
+//     updatedAt               DateTime @updatedAt
+//     deletedAt               DateTime?
+//     userId Int
+//     user User @relation(fields: [userId],references: [id])
+// }
+
+
+// model UserRole{
+//     id    Int     @default(autoincrement()) @id
+//     roleName String
+//     isActive Boolean @default(true)
+//         createdAt               DateTime               @default(now())
+//    updatedAt               DateTime @updatedAt
+//     deletedAt               DateTime?
+
+//     user UserDetails[]
+  
+// }
+// model Country {
+//    id    Int     @default(autoincrement()) @id
+//    name String
+//        createdAt               DateTime               @default(now())
+//    updatedAt               DateTime @updatedAt
+//     deletedAt               DateTime?
+
+//    states  State[]
+// }
+
+// model State{
+//    id    Int     @default(autoincrement()) @id
+//    name String
+//        createdAt               DateTime               @default(now())
+//    updatedAt               DateTime @updatedAt
+//     deletedAt               DateTime?
+
+//    countryId Int
+//    country Country @relation(fields: [countryId],references: [id])
+//    city City[]
+// }
+
+// model City{
+//    id    Int     @default(autoincrement()) @id
+//    name String
+//    createdAt               DateTime               @default(now())
+//    updatedAt               DateTime @updatedAt
+//    deletedAt               DateTime?
+//    stateId Int
+//    state State @relation(fields:[stateId],references: [id])
+// }
+
+// model MobileVerificationOtpRequest{
+//      id    Int     @default(autoincrement()) @id
+//      otp String 
+//           isActive Boolean @default(false)
+
+//      createdAt               DateTime               @default(now())
+//      deletedAt               DateTime?
+//      userId Int
+//      user User @relation(fields: [userId],references: [id])
+// }
+
+// model LoginOtpRequest{
+//      id    Int     @default(autoincrement()) @id
+//      otp String 
+//      createdAt               DateTime               @default(now())
+//      deletedAt               DateTime?
+//      isActive Boolean 
+//     isLoggedIn Boolean
+//      userId Int
+//      user User @relation(fields: [userId],references: [id])
+// }
+
+// model ForgotPassWordOtpRequest{
+//      id    Int     @default(autoincrement()) @id
+//      otp String 
+//      createdAt               DateTime               @default(now())
+//      deletedAt               DateTime?
+//      isActive Boolean 
+//      userId Int
+//      user User @relation(fields: [userId],references: [id])
+// }
+
+
+
+
+
+
+model User {
+   id        Int          @default(autoincrement()) @id
+   firstName String
+   lastName  String
+  isActive Boolean @default(true)
+   createdAt DateTime     @default(now())
+   updatedAt DateTime     @updatedAt
+   deletedAt DateTime?
+   password  UserPassword[]
+   userDetails UserDetails[]
+       mobileVerificationRequest MobileVerificationOtpRequest[]
+    loginRequest LoginOtpRequest[]
+    forgotPassWordOtpRequest ForgotPassWordOtpRequest[]
+   createdByUserId  Int? 
+   createdByUser User? @relation("UserCreated", fields: [createdByUserId], references: [id]) // Relation
+   createdUsers   User[] @relation("UserCreated") 
+}
+
+model UserPassword{
+    id    Int     @default(autoincrement()) @id
+    password String
+    isActive Boolean @default(true)
+        createdAt               DateTime               @default(now())
+    updatedAt               DateTime @updatedAt
+    deletedAt               DateTime?
+    userId Int
+    user User @relation(fields: [userId],references: [id])
+}
+
+model UserDetails{
+    id    Int     @default(autoincrement()) @id
+    mobileNumber String @unique
+    istwoFactorEnabled Boolean @default(true)
+    countryCode String
+    isMobileNumberVerified Boolean @default(false)
+    email String @unique
+    isActive    Boolean @default(true)
+    createdAt               DateTime               @default(now())
+    updatedAt               DateTime          @updatedAt
+    deletedAt               DateTime?
+    userId Int
+    user User @relation(fields:[userId],references: [id])
+    userRoleId Int
+    userRole UserRole @relation(fields: [userRoleId],references: [id])
+}
+
+model UserRole{
+    id    Int     @default(autoincrement()) @id
+    roleName String
+    isActive Boolean @default(true)
+        createdAt               DateTime               @default(now())
+   updatedAt               DateTime @updatedAt
+    deletedAt               DateTime?
+    user UserDetails[]
+}
+
+
+model MobileVerificationOtpRequest{
+     id    Int     @default(autoincrement()) @id
+     otp String 
+          isActive Boolean @default(false)
+     createdAt               DateTime               @default(now())
+     deletedAt               DateTime?
+     userId Int
+     user User @relation(fields: [userId],references: [id])
+}
+
+model LoginOtpRequest{
+     id    Int     @default(autoincrement()) @id
+     otp String 
+     createdAt               DateTime               @default(now())
+     deletedAt               DateTime?
+     isActive Boolean 
+    isLoggedIn Boolean
+     userId Int
+     user User @relation(fields: [userId],references: [id])
+}
+
+model ForgotPassWordOtpRequest{
+     id    Int     @default(autoincrement()) @id
+     otp String 
+     createdAt               DateTime               @default(now())
+     deletedAt               DateTime?
+     isActive Boolean 
+     userId Int
+     user User @relation(fields: [userId],references: [id])
+}
+
+
+model Country {
+       id        Int          @default(autoincrement()) @id
+       name String @unique
+       countryCode String  @unique
+           isActive    Boolean @default(true)
+    createdAt DateTime     @default(now())
+   updatedAt DateTime     @updatedAt
+   deletedAt DateTime?
+   branches Branch[]
+}
+
+model Branch{
+    id        Int          @default(autoincrement()) @id
+    name String 
+    isActive    Boolean @default(true)
+    createdAt DateTime     @default(now())
+   updatedAt DateTime     @updatedAt
+   deletedAt DateTime?
+   franchises Franchise[]
+   countryId Int
+   country Country @relation(fields: [countryId],references: [id])
+}
+
+
+model Franchise {
+        id        Int          @default(autoincrement()) @id
+       name String
+           isActive    Boolean @default(true)
+
+    createdAt DateTime     @default(now())
+   updatedAt DateTime     @updatedAt
+   deletedAt DateTime?
+   websites Website[]
+  branchId Int
+  branch Branch @relation(fields: [branchId],references: [id])
+
+}
+
+
+model Website {
+                   id        Int          @default(autoincrement()) @id
+       name String
+       websiteUrl String
+       countryCode String
+   franchiseId Int
+   franchise Franchise @relation(fields: [franchiseId],references: [id])
+    createdAt DateTime     @default(now())
+   updatedAt DateTime     @updatedAt
+   deletedAt DateTime?
+   bestSellingDishContents BestSellingDishContent[]
+   festiveOffersContents FestiveOffersContent[]
+   testimonialsContents TestimonialsContent[]
+   breakFastContents BreakFastContent[]
+   lunchContent  LunchContent[]
+   dinnerContents  DinnerContent[]
+   locationDetails LocationDetails[]
+   cateringServiceContent CateringServiceContent[]
+   blogContent BlogContent[]
+   onlineOrderStore OnlineOrderStore[]
+   contactDetails ContactDetails[]
+   websiteSectionsOrder WebsiteSectionOrder[]
+  }
+
+model WebsiteSectionOrder {
+  id          Int           @default(autoincrement()) @id
+  websiteId   Int
+  sectionName String
+  isActive  Boolean @default(true)
+  order       Int           
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+  deletedAt DateTime?
+  website     Website       @relation(fields: [websiteId], references: [id])
+}
+
+
+model BestSellingDishContent {
+                   id        Int          @default(autoincrement()) @id
+       name String 
+       isActive Boolean @default(true)
+      content String  
+      websiteId Int
+      website Website @relation(fields: [websiteId],references: [id])
+}
+
+model FestiveOffersContent{
+                       id        Int          @default(autoincrement()) @id
+       name String 
+       isActive Boolean @default(true)
+      content String  
+      websiteId Int
+      website Website @relation(fields: [websiteId],references: [id])
+}
+model TestimonialsContent{
+                           id        Int          @default(autoincrement()) @id
+       name String 
+
+       isActive Boolean @default(true)
+      content String  
+      websiteId Int
+      website Website @relation(fields: [websiteId],references: [id])
+
+}
+
+model BreakFastContent{
+                               id        Int          @default(autoincrement()) @id
+       name String 
+
+       isActive Boolean @default(true)
+      content String  
+      websiteId Int
+      website Website @relation(fields: [websiteId],references: [id])
+
+}
+
+model DinnerContent{
+                                   id        Int          @default(autoincrement()) @id
+       name String 
+
+       isActive Boolean @default(true)
+      content String  
+      websiteId Int
+      website Website @relation(fields: [websiteId],references: [id])
+
+}
+
+model LocationDetails{
+      id        Int          @default(autoincrement()) @id
+       name String 
+       isActive Boolean @default(true)
+      content String  
+      websiteId Int
+      website Website @relation(fields: [websiteId],references: [id])
+
+}
+
+model CateringServiceContent{
+       id        Int          @default(autoincrement()) @id
+       name String 
+       isActive Boolean @default(true)
+      content String  
+      websiteId Int
+      website Website @relation(fields: [websiteId],references: [id])
+
+}
+
+model BlogContent{
+         id        Int          @default(autoincrement()) @id
+       name String 
+       isActive Boolean @default(true)
+      content String  
+      websiteId Int
+      website Website @relation(fields: [websiteId],references: [id])
+}
+
+model LunchContent{
+               id        Int          @default(autoincrement()) @id
+       name String 
+       isActive Boolean @default(true)
+      content String  
+      websiteId Int
+      website Website @relation(fields: [websiteId],references: [id])
+
+}
+
+model OnlineOrderStore{
+               id        Int          @default(autoincrement()) @id
+       name String 
+     websiteLink String
+            isActive Boolean @default(true)
+      websiteId Int
+      website Website @relation(fields: [websiteId],references: [id])
+
+}
+
+model ContactDetails {
+                  id        Int          @default(autoincrement()) @id
+               isActive Boolean @default(true)
+    email String
+    address String
+    otherDetails String
+          websiteId Int
+      website Website @relation(fields: [websiteId],references: [id])
+
+}
