@@ -3,6 +3,6 @@ function greet() {
 }
 
 // Duplicate function
-function greet() {
+function greetOne() {
   console.log("Hello, World!");
 }
